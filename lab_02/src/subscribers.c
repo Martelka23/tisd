@@ -221,33 +221,44 @@ void read_string(char *s)
 error_code add_sub(subscribers *subs)
 {
     subscriber sub;
+    int rc = 0;
     printf("<Ввод абонента>\nФамилия: ");
-    scanf("%s", sub.surname);
+    rc += scanf("%s", sub.surname);
     getchar();
     printf("Имя: ");
-    scanf("%s", sub.name);
+    rc += scanf("%s", sub.name);
     getchar();
     printf("Номер: ");
-    scanf("%lu", &(sub.number));
+    rc += scanf("%lu", &(sub.number));
     getchar();
     printf("Адрес: ");
     read_string(sub.address);
     formating(sub.address, MAX_ADDRESS_LENGTH);
     getchar();
     printf("Статус p (личный) или s (служебный): ");
-    scanf("%c", &sub.status_type);
+    rc += scanf("%c", &sub.status_type);
     getchar();
+    if (rc != 5)
+    {
+        printf("Неправильный ввод!\n");
+        return WRONG_INPUT;
+    }
     if (sub.status_type == 'p')
     {
         printf("<Ввод личного статуса>\nГод: ");
-        scanf("%hu", &(sub.status.private_.birthday.year));
+        rc += scanf("%hu", &(sub.status.private_.birthday.year));
         getchar();
         printf("Месяц: ");
-        scanf("%hu", &(sub.status.private_.birthday.month));
+        rc += scanf("%hu", &(sub.status.private_.birthday.month));
         getchar();
         printf("День: ");
-        scanf("%hu", &(sub.status.private_.birthday.day));
+        rc += scanf("%hu", &(sub.status.private_.birthday.day));
         getchar();
+        if (rc != 7)
+        {
+            printf("Неправильный ввод!\n");
+            return WRONG_INPUT;
+        }
     }
     else if (sub.status_type == 's')
     {

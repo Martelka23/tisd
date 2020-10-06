@@ -64,7 +64,7 @@ typedef struct
 
 size_t read_count_of_elements(FILE *file);
 
-error_code read_elements(FILE *file, subscribers *subs);
+void read_elements(FILE *file, subscribers *subs);
 
 error_code read_subs(subscribers *subs);
 // Функция вывода на экран
