@@ -179,8 +179,18 @@ error_code sort_subs(subscribers *subs)
         double times[2];
         for (int i = 0; i < 2; i++)
             times[i] = main_sort(subs, choises[i], 0);
-        printf("Время сортировки 1 ~ %.6f\n", times[0]);
-        printf("Время сортировки 2 ~ %.6f\n", times[1]);
+        for (int i = 0; i < 2; i++)
+            times[i] += main_sort(subs, choises[i], 0);
+        for (int i = 0; i < 2; i++)
+            times[i] += main_sort(subs, choises[i], 0);
+        for (int i = 0; i < 2; i++)
+            times[i] += main_sort(subs, choises[i], 0);
+        for (int i = 0; i < 2; i++)
+            times[i] += main_sort(subs, choises[i], 0);
+        for (int i = 0; i < 2; i++)
+            times[i] += main_sort(subs, choises[i], 0);
+        printf("Время сортировки %d ~ %.6f\n", choises[0], times[0]);
+        printf("Время сортировки %d ~ %.6f\n", choises[1], times[1]);
         printf("Сортировка 1 быстрее сортировки 2 в %.4f раз\n", times[1] / times[0]);
     } else
     {

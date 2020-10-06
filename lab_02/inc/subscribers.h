@@ -1,4 +1,5 @@
 #pragma once
+#pragma pack(1)
 
 #include <stdio.h>
 #include <string.h>
@@ -7,10 +8,10 @@
 #include "errors.h"
 
 #define SYMBOL_LENGTH 1
-#define MAX_NAME_LENGTH 61
-#define MAX_ADDRESS_LENGTH 131
+#define MAX_NAME_LENGTH 31 * 3
+#define MAX_ADDRESS_LENGTH 51 * 3
 #define MAX_SUBS_LENGTH 51
-#define MAX_INPUT_LENGTH 51
+#define MAX_INPUT_LENGTH 51 * 3
 
 // Структура даты
 typedef struct
@@ -29,15 +30,15 @@ typedef struct
 // Структура служебного статуса
 typedef struct
 {
-    char position[MAX_NAME_LENGTH];  // 31 байт
-    char organization[MAX_NAME_LENGTH];  // 31 байт
+    char position[MAX_NAME_LENGTH];  // 93 байт
+    char organization[MAX_NAME_LENGTH];  // 93 байт
 } service_status;
 
 // Объединение статусов
 typedef union
 {
     private_status private_;  // 6 байт
-    service_status service;  // 62 байт
+    service_status service;  // 186 байт
 } number_status;
 
 // Структура абонента
@@ -48,29 +49,36 @@ typedef struct
     unsigned long int number;  // 8 байт
     char address[MAX_ADDRESS_LENGTH];  // 51 байт
     char status_type;  // 1 байт
-    number_status status; // 66 байт
-} subscriber;  // 191 байт
+    number_status status; // 192 байт
+} subscriber;  // 314 байт
 
 // Структура массива
 typedef struct
 {
-    subscriber sub[MAX_SUBS_LENGTH];  // 191 байт
+    subscriber sub[MAX_SUBS_LENGTH];  // 314 байт
     unsigned short int length; // 2 байта
-    unsigned short int capacity; // 2 байта
-} subscribers;
+} subscribers; // 316
 
 
-// error_code memory_allocation(subscribers *subs);
-
+// Глубокое копирование записи
+void sub_cpy(subscribers *subs, subscribers *new);
+// Подсчёт полей из файла
 size_t read_count_of_elements(FILE *file);
-
+// Форматирование строки при вводе
+void formating(char *string, int max_length);
+// Считывание записей из файла
 void read_elements(FILE *file, subscribers *subs);
-
+// Считывание записей
 error_code read_subs(subscribers *subs);
 // Функция вывода на экран
 void print_all_subscribers(subscribers *subs);
+// Считывание строки
+void read_string(char *s);
 // Функция добавления абонента
 error_code add_sub(subscribers *subs);
+// Удаление записи
 void rm(subscribers *subs, int index);
+// Выбор и удаление записей
 void del_sub(subscribers *subs);
-void read_string(char *s);
+// Показать пользователей с днём рождения на этой неделе
+void show_birthsday(subscribers *subs);

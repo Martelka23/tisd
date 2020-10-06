@@ -11,7 +11,7 @@ int main()
     subs.length = 0;
     error = read_subs(&subs);
 
-    while (choise != 6 && !error)
+    while (choise != 7 && !error)
     {
         print_main_menu_interface();
         scanf("%d", &choise);
@@ -25,6 +25,8 @@ int main()
             error = add_sub(&subs);
         else if (choise == 5)
             del_sub(&subs);
+        else if (choise == 6)
+            show_birthsday(&subs);
     }
 
 

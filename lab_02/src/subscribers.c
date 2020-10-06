@@ -21,7 +21,6 @@
 void sub_cpy(subscribers *subs, subscribers *new)
 {
     new->length = subs->length;
-    new->capacity = subs->capacity;
     // memory_allocation(new);
     subscriber *new_sub = new->sub;
     subscriber *sub = subs->sub;
@@ -81,14 +80,14 @@ void read_elements(FILE *file, subscribers *subs)
             "%s%s%lu\n",
             sub->surname, sub->name, &sub->number
         );
-        printf("%s\n%s\n%lu\n", sub->surname, sub->name, sub->number);
+        // printf("%s\n%s\n%lu\n", sub->surname, sub->name, sub->number);
 
         fgets(sub->address, MAX_ADDRESS_LENGTH, file);
         formating(sub->address, MAX_ADDRESS_LENGTH);
-        printf("%s\n", sub->address);
+        // printf("%s\n", sub->address);
 
         fscanf(file, "%c\n", &sub->status_type);
-        printf("%c\n", sub->status_type);
+        // printf("%c\n", sub->status_type);
 
         if (sub->status_type == 'p')
         {
@@ -99,20 +98,20 @@ void read_elements(FILE *file, subscribers *subs)
                 &sub->status.private_.birthday.month,
                 &sub->status.private_.birthday.day
             );
-            printf("%hu\n%hu\n%hu\n",
-                sub->status.private_.birthday.year,
-                sub->status.private_.birthday.month,
-                sub->status.private_.birthday.day);
+            // printf("%hu\n%hu\n%hu\n",
+                // sub->status.private_.birthday.year,
+                // sub->status.private_.birthday.month,
+                // sub->status.private_.birthday.day);
         }
         else if (sub->status_type == 's')
         {
             fgets(sub->status.service.position, MAX_NAME_LENGTH, file);
             formating(sub->status.service.position, MAX_NAME_LENGTH);
-            printf("%s\n", sub->status.service.position);
+            // printf("%s\n", sub->status.service.position);
 
             fgets(sub->status.service.organization, MAX_NAME_LENGTH, file);
             formating(sub->status.service.organization, MAX_NAME_LENGTH);
-            printf("%s\n", sub->status.service.organization);
+            // printf("%s\n", sub->status.service.organization);
         }
         fgets(tmp, SYMBOL_LENGTH, file);
     }
@@ -139,40 +138,6 @@ error_code read_subs(subscribers *subs)
 
     return error;
 }
-
-
-// Функция для записи в файл
-void save(subscribers *subs)
-{
-    FILE *file = fopen("subscribers.txt", "w");
-    subscriber *sub = subs->sub;
-    for (int i = 0; i < subs->length; i++, sub++)
-    {
-        fprintf(
-            file,
-            "%s\n%s\n%lu\n%s\n%c\n",
-            sub->surname, sub->name, sub->number, sub->address, sub->status_type
-        );
-        if (sub->status_type == 'p')
-            fprintf(
-                file,
-                "%hu %hu %hu\n\n",
-                sub->status.private_.birthday.year, 
-                sub->status.private_.birthday.month,
-                sub->status.private_.birthday.day
-            );
-        else if (sub->status_type == 's')
-            fprintf(
-                file,
-                "%s\n%s\n\n",
-                sub->status.service.position,
-                sub->status.service.organization
-            );
-    }
-    fclose(file);
-}
-
-
 
 // Функция вывода на экран
 void print_all_subscribers(subscribers *subs)
@@ -373,4 +338,45 @@ void del_sub(subscribers *subs)
             if (!strcmp(subs->sub[i].status.service.organization, s))
                 rm(subs, i);
     }   
+}
+
+void show_birthsday(subscribers *subs)
+{
+    date today;
+    int days[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    int rc = 0;
+    printf("Введите месяц и день: ");
+    rc += scanf("%hu", &today.month);
+    rc += scanf("%hu", &today.day);
+    for (int i = 0; i < 7; (today.day)++, i++)
+    {
+        if (today.day > days[today.month])
+        {
+            today.day = 1;
+            today.month += 1;
+        }
+        subscriber *sub = subs->sub;
+        for (int j = 0; j < subs->length; sub++, j++)
+        {
+            if (
+                sub->status.private_.birthday.month == today.month &&
+                sub->status.private_.birthday.day == today.day
+            )
+                printf(
+                    "%s"
+                    " %s"
+                    " %lu"
+                    " %s"
+                    " %s"
+                    " %hu"
+                    " %hu"
+                    " %hu\n",
+                    sub->surname, sub->name, sub->number, sub->address, 
+                    (sub->status_type == 'p') ? "личный" : "служебный",
+                    sub->status.private_.birthday.year, 
+                    sub->status.private_.birthday.month,
+                    sub->status.private_.birthday.day
+                );
+        }
+    }
 }
