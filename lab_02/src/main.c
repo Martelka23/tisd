@@ -24,7 +24,7 @@ int main()
         else if (choise == 4)
             error = add_sub(&subs);
         else if (choise == 5)
-            del_sub(&subs);
+            error = del_sub(&subs);
         else if (choise == 6)
             show_birthsday(&subs);
     }

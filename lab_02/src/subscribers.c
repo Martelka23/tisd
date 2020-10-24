@@ -146,11 +146,12 @@ void print_all_subscribers(subscribers *subs)
     for (unsigned short i = 0; i < subs->length; sub++, i++)
     {
         printf(
-            "%s"
+            "%d"
+            " %s"
             " %s"
             " %lu"
             " %s",
-            sub->surname, sub->name, sub->number, sub->address
+            i, sub->surname, sub->name, sub->number, sub->address
         );
         if (sub->status_type == 'p')
             printf(
@@ -175,7 +176,7 @@ void read_string(char *s)
 {
     int i = 0;
     char c;
-    scanf("%c", &c);
+    // scanf("%c", &c);
     for (scanf("%c", &c); c != '\n'; scanf("%c", &c), i++)
         s[i] = c;
     s[i] = '\0';
@@ -199,11 +200,16 @@ error_code add_sub(subscribers *subs)
     printf("Адрес: ");
     read_string(sub.address);
     formating(sub.address, MAX_ADDRESS_LENGTH);
-    getchar();
+    // getchar();
     printf("Статус p (личный) или s (служебный): ");
     rc += scanf("%c", &sub.status_type);
+    if (sub.status_type != 'p' && sub.status_type != 'c')
+    {
+        printf("Неправильный ввод!\n");
+        return WRONG_INPUT;
+    }
     getchar();
-    if (rc != 5)
+    if (rc != 4)
     {
         printf("Неправильный ввод!\n");
         return WRONG_INPUT;
@@ -219,7 +225,14 @@ error_code add_sub(subscribers *subs)
         printf("День: ");
         rc += scanf("%hu", &(sub.status.private_.birthday.day));
         getchar();
-        if (rc != 7)
+        
+        if (
+            rc != 7 ||
+            sub.status.private_.birthday.year <= 0 || sub.status.private_.birthday.year > 2020 ||
+            sub.status.private_.birthday.month <= 0 || sub.status.private_.birthday.month > 12 ||
+            sub.status.private_.birthday.day <= 0 || sub.status.private_.birthday.day > 31
+
+        )
         {
             printf("Неправильный ввод!\n");
             return WRONG_INPUT;
@@ -249,7 +262,7 @@ void rm(subscribers *subs, int index)
 }
 
 
-void del_sub(subscribers *subs)
+error_code del_sub(subscribers *subs)
 {
     int choise;
     printf("<Удаление абонента>\nВыберите поле, по которому хотите удалить:\n");
@@ -262,7 +275,8 @@ void del_sub(subscribers *subs)
             "\n6.Месяц"
             "\n7.День"
             "\n8.Должность"
-            "\n9.Организация\n"
+            "\n9.Организация"
+            "\n10.id\n"
     );
     scanf("%d", &choise);
     if (choise == 1)
@@ -302,6 +316,11 @@ void del_sub(subscribers *subs)
         unsigned long int n;
         printf("Введите год рождения: ");
         scanf("%lu", n);
+        if (n <= 0 || n > 2020)
+        {
+            printf("Неправильный ввод!\n");
+            return WRONG_INPUT;
+        }
         for (int i = subs->length; i >= 0; i--)
             if (subs->sub[i].status.private_.birthday.year == n)
                 rm(subs, i);
@@ -310,6 +329,11 @@ void del_sub(subscribers *subs)
         unsigned long int n;
         printf("Введите месяц рождения: ");
         scanf("%lu", n);
+        if (n <= 0 || n > 12)
+        {
+            printf("Неправильный ввод!\n");
+            return WRONG_INPUT;
+        }
         for (int i = subs->length; i >= 0; i--)
             if (subs->sub[i].status.private_.birthday.month == n)
                 rm(subs, i);
@@ -318,6 +342,11 @@ void del_sub(subscribers *subs)
         unsigned long int n;
         printf("Введите день рождения: ");
         scanf("%lu", n);
+        if (n <= 0 || n > 31)
+        {
+            printf("Неправильный ввод!\n");
+            return WRONG_INPUT;
+        }
         for (int i = subs->length; i >= 0; i--)
             if (subs->sub[i].status.private_.birthday.day == n)
                 rm(subs, i);
@@ -337,7 +366,15 @@ void del_sub(subscribers *subs)
         for (int i = subs->length; i >= 0; i--)
             if (!strcmp(subs->sub[i].status.service.organization, s))
                 rm(subs, i);
-    }   
+    } else if (choise == 10)
+    {
+        int id;
+        printf("Введите id: ");
+        scanf("%d", &id);
+        rm(subs, id);
+    }
+
+    return OK;
 }
 
 void show_birthsday(subscribers *subs)

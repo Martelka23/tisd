@@ -16,6 +16,13 @@ void swap_keys(int *a, int *b)
     *b = tmp;
 }
 
+void print_keys(int *a, int l)
+{
+    printf("\nОтсортированный список ключей:\n");
+    for (int i = 0; i < l; i++)
+        printf("%d %d\n", i, a[i]);
+}
+
 int subcmp(subscriber *a, subscriber *b)
 {
     return strcmp(a->surname, b->surname);
@@ -37,7 +44,7 @@ double bubble_sort_no_keys(subscribers *subs)
     END_TIMER
 }
 
-double bubble_sort_with_keys(subscribers *subs)
+double bubble_sort_with_keys(subscribers *subs, int print)
 {
     START_TIMER
     int keys[subs->length];
@@ -60,6 +67,8 @@ double bubble_sort_with_keys(subscribers *subs)
         tmp[i] = subs->sub[keys[i]];
     for (int i = 0; i < subs->length; i++)
         subs->sub[i] = tmp[i];
+    if (print)
+        print_keys(keys, subs->length);
 
     END_TIMER
 }
@@ -120,7 +129,7 @@ void qsort_with_keys(subscriber *subs, int *keys, int first, int last)
     }
 }
 
-double quick_sort_with_keys(subscribers *subs)
+double quick_sort_with_keys(subscribers *subs, int print)
 {
     START_TIMER
     int keys[subs->length];
@@ -134,6 +143,8 @@ double quick_sort_with_keys(subscribers *subs)
         tmp[i] = subs->sub[keys[i]];
     for (int i = 0; i < subs->length; i++)
         subs->sub[i] = tmp[i];
+    if (print)
+        print_keys(keys, subs->length);
     END_TIMER
 }
 
@@ -145,7 +156,7 @@ double main_sort(subscribers *subs, int choise, int print)
     sub_cpy(subs, &sorted);
     if (choise == 1)
     {
-        t = bubble_sort_with_keys(&sorted);
+        t = bubble_sort_with_keys(&sorted, print);
     }
     else if (choise == 2)
     {
@@ -153,14 +164,17 @@ double main_sort(subscribers *subs, int choise, int print)
     }
     else if (choise == 3)
     {
-        t = quick_sort_with_keys(&sorted);
+        t = quick_sort_with_keys(&sorted, print);
     }
     else if (choise == 4)
     {
         t = quick_sort_no_keys(sorted.sub, 0, sorted.length - 1);
     }
     if (print)
+    {
         print_all_subscribers(&sorted);
+        printf("Время сортировки %d ~ %.6f(с)\n", choise, t);
+    }
     // free(sorted.sub);
     return t;
 }
@@ -179,18 +193,8 @@ error_code sort_subs(subscribers *subs)
         double times[2];
         for (int i = 0; i < 2; i++)
             times[i] = main_sort(subs, choises[i], 0);
-        for (int i = 0; i < 2; i++)
-            times[i] += main_sort(subs, choises[i], 0);
-        for (int i = 0; i < 2; i++)
-            times[i] += main_sort(subs, choises[i], 0);
-        for (int i = 0; i < 2; i++)
-            times[i] += main_sort(subs, choises[i], 0);
-        for (int i = 0; i < 2; i++)
-            times[i] += main_sort(subs, choises[i], 0);
-        for (int i = 0; i < 2; i++)
-            times[i] += main_sort(subs, choises[i], 0);
-        printf("Время сортировки %d ~ %.6f\n", choises[0], times[0]);
-        printf("Время сортировки %d ~ %.6f\n", choises[1], times[1]);
+        printf("Время сортировки %d ~ %.6f(с)\n", choises[0], times[0]);
+        printf("Время сортировки %d ~ %.6f(с)\n", choises[1], times[1]);
         printf("Сортировка 1 быстрее сортировки 2 в %.4f раз\n", times[1] / times[0]);
     } else
     {

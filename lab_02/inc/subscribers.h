@@ -49,15 +49,15 @@ typedef struct
     unsigned long int number;  // 8 байт
     char address[MAX_ADDRESS_LENGTH];  // 51 байт
     char status_type;  // 1 байт
-    number_status status; // 192 байт
-} subscriber;  // 314 байт
+    number_status status; // 186 байт
+} subscriber;  // 308 байт
 
 // Структура массива
 typedef struct
 {
     subscriber sub[MAX_SUBS_LENGTH];  // 314 байт
     unsigned short int length; // 2 байта
-} subscribers; // 316
+} subscribers; // 310
 
 
 // Глубокое копирование записи
@@ -79,6 +79,6 @@ error_code add_sub(subscribers *subs);
 // Удаление записи
 void rm(subscribers *subs, int index);
 // Выбор и удаление записей
-void del_sub(subscribers *subs);
+error_code del_sub(subscribers *subs);
 // Показать пользователей с днём рождения на этой неделе
 void show_birthsday(subscribers *subs);

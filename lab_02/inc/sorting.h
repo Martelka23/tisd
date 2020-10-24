@@ -21,18 +21,20 @@ typedef struct
 void swap(subscriber *a, subscriber *b);
 // Перестановка ключей
 void swap_keys(int *a, int *b);
+// Вывод ключей на экран
+void print_keys(int *a, int l);
 // Сравнение записей
 int subcmp(subscriber *a, subscriber *b);
 // Сортировка пузырьком без ключей
 double bubble_sort_no_keys(subscribers *subs);
 // Сортировка пузырьком с ключами
-double bubble_sort_with_keys(subscribers *subs);
+double bubble_sort_with_keys(subscribers *subs, int print);
 // Быстрая сортировка без ключей
 double quick_sort_no_keys(subscriber *subs, int first, int last);
 // Быстрая сортировка с ключпми
 void qsort_with_keys(subscriber *subs, int *keys, int first, int last);
 // Запуск быстрой сортировки с ключами
-double quick_sort_with_keys(subscribers *subs);
+double quick_sort_with_keys(subscribers *subs, int print);
 // Главная функция сортировки
 double main_sort(subscribers *subs, int choise, int print);
 // Меню сортировки
