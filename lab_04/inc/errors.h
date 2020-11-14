@@ -10,7 +10,8 @@ typedef enum errors
     WRONG_ELEMENT,
     ARRAY_OWERFLOW,
     ARRAY_UNDERFLOW,
-    STACK_OWERFLOW
+    STACK_OWERFLOW,
+    STACK_UNDERFLOW
 } error_code;
 
 
