@@ -1,7 +1,7 @@
-#include "../inc/menu.h"
 #include "../inc/errors.h"
 #include "../inc/list_stack.h"
 #include "../inc/array_stack.h"
+#include "../inc/menu_interfaces.h"
 #include "../inc/address_monitoring.h"
 
 
@@ -20,8 +20,11 @@ int main()
             case GET_INFO:
                 interface_read_me();
                 break;
-            case STACK_MENU:
-                menu_stack();
+            case ARRAY_STACK:
+                error = menu_array_stack();
+                break;
+            case LIST_STACK:
+                error = menu_list_stack();
                 break;
             case EXIT:
                 break;

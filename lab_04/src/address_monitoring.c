@@ -51,6 +51,13 @@ void addresses_array_push_back(addresses_array_t *addresses_array, int *x)
     addresses_array->addresses[addresses_array->length++] = x;
 }
 
+// Удаление элемента из массива адресов
+void addresses_array_pop(addresses_array_t *addresses_array, int **x)
+{
+    *x = addresses_array->addresses[addresses_array->length - 1];
+    addresses_array->length--;
+}
+
 // Вывести на экран массив адресов
 void addresses_array_print(addresses_array_t *addresses_array)
 {

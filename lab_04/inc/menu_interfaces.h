@@ -6,16 +6,9 @@ typedef enum main_menu_choise
 {
     EXIT,
     GET_INFO,
-    STACK_MENU
-} main_menu_choise;
-
-// Варианты меню работы со стэком
-typedef enum menu_stack_choise
-{
-    EXIT,
     ARRAY_STACK,
     LIST_STACK
-} menu_stack_choise;
+} main_menu_choise;
 
 // Варианты работы со стэком на массиве
 typedef enum menu_array_stack_choise

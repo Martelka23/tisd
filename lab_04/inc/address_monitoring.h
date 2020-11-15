@@ -34,6 +34,8 @@ void addresses_array_del(addresses_array_t *addresses_array);
 void address_monitoring_del(address_monitoring_t *address_monitoring);
 // Добавление элемента в массив адресов
 void addresses_array_push_back(addresses_array_t *addresses_array, int *x);
+// Удаление элемента из массива адресов
+void addresses_array_pop(addresses_array_t *addresses_array, int **x);
 // Вывести на экран массив адресов
 void addresses_array_print(addresses_array_t *addresses_array);
 // Вывести на экран мониторинг адресов
