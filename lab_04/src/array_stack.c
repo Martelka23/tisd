@@ -20,7 +20,7 @@ void array_stack_init(array_stack_t *array_stack)
 // Освобождение памяти
 void array_stack_memory_deallocation(array_stack_t *array_stack)
 {
-    free(array_stack);
+    free(array_stack->begin);
 }
 
 // Деструктор
@@ -35,7 +35,7 @@ void array_stack_del(array_stack_t *array_stack)
 // Добавление элемента
 error_code array_stack_add(array_stack_t *array_stack, int x)
 {
-    error_code error = (array_stack->end - array_stack->begin > array_stack->capacity) ? STACK_OWERFLOW : OK;
+    error_code error = (array_stack->end - array_stack->begin >= array_stack->capacity) ? STACK_OWERFLOW : OK;
 
     if (!error)
     {
@@ -53,8 +53,8 @@ error_code array_stack_pop(array_stack_t *array_stack, int *x)
 
     if (!error)
     {
-        x = array_stack->end;
         array_stack->end--;
+        *x = *array_stack->end;
     }
 
     return error;

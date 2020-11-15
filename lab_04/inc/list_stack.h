@@ -20,3 +20,17 @@ typedef struct list_stack
     node_t *end;
     int length;
 } list_stack_t;
+
+
+// Выделение памяти узла
+void node_memory_allocation(node_t **node);
+// Конструктор
+void list_stack_init(list_stack_t *list_stack);
+// Освобождение памяти узла
+void node_memory_deallocation(node_t **node);
+// Деструктор
+void list_stack_del(list_stack_t *list_stack);
+// Добавление элемента
+void list_stack_add(list_stack_t *list_stack, int x);
+// Удаление элемента
+error_code list_stack_pop(list_stack_t *list_stack, int *x);

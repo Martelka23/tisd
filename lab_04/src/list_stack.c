@@ -2,9 +2,9 @@
 
 
 // Выделение памяти узла
-void node_memory_allocation(node_t *node)
+void node_memory_allocation(node_t **node)
 {
-    node = calloc(1, sizeof(node_t));
+    *node = calloc(1, sizeof(node_t));
 }
 
 // Конструктор
@@ -16,10 +16,10 @@ void list_stack_init(list_stack_t *list_stack)
 }
 
 // Освобождение памяти узла
-void node_memory_deallocation(node_t *node)
+void node_memory_deallocation(node_t **node)
 {
-    free(node);
-    node = NULL;
+    free(*node);
+    *node = NULL;
 }
 
 // Деструктор
@@ -29,24 +29,28 @@ void list_stack_del(list_stack_t *list_stack)
     {
         node_t *tmp = list_stack->end;
         list_stack->end = list_stack->end->prev;
-        node_memory_deallocation(tmp);
+        node_memory_deallocation(&tmp);
     }
 }
 
 // Добавление элемента
-void list_stack_add(list_stack_t *list_stack)
+void list_stack_add(list_stack_t *list_stack, int x)
 {
     if (list_stack->begin == NULL)
     {
-        node_memory_allocation(list_stack->begin);
+        node_memory_allocation(&list_stack->begin);
         list_stack->end = list_stack->begin;
+        list_stack->end->num = x;
+        list_stack->end->prev = NULL;
     } else
     {
         node_t *tmp = list_stack->end;
         list_stack->end = NULL;
-        node_memory_allocation(list_stack->end);
+        node_memory_allocation(&list_stack->end);
+        list_stack->end->num = x;
         list_stack->end->prev = tmp;
     }
+    list_stack->length += 1;
 }
 
 // Удаление элемента
@@ -58,7 +62,7 @@ error_code list_stack_pop(list_stack_t *list_stack, int *x)
     {
         *x = list_stack->end->num;
         node_t *tmp = list_stack->end->prev;
-        node_memory_deallocation(list_stack->end);
+        node_memory_deallocation(&list_stack->end);
         list_stack->end = tmp;
     }
 

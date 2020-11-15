@@ -1,7 +1,6 @@
 #pragma once
 #pragma pack (1)
 
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "errors.h"
