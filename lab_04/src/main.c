@@ -1,14 +1,13 @@
 #include "../inc/errors.h"
-#include "../inc/list_stack.h"
-#include "../inc/array_stack.h"
 #include "../inc/menu_interfaces.h"
-#include "../inc/address_monitoring.h"
+#include "../inc/work_with_list_stack.h"
+#include "../inc/work_with_array_stack.h"
 
 
 int main()
 {
     error_code error = OK;
-    main_menu_choise choise;
+    int choise;
 
     do
     {

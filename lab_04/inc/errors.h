@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdio.h>
 
 // Коды ошибок
 typedef enum errors

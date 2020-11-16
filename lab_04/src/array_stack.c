@@ -4,7 +4,7 @@
 // Выделение памяти
 void array_stack_memory_allocation(array_stack_t *array_stack)
 {
-    array_stack->begin = calloc(array_stack->capacity, sizeof(int));
+    array_stack->begin = calloc((size_t)array_stack->capacity, sizeof(int));
 }
 
 // Конструктор

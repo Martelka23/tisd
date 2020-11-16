@@ -15,8 +15,8 @@ typedef struct addresses_array
 // Структура мониторинга адресов
 typedef struct address_monitoring
 {
-    addresses_array_t **allocated;
-    addresses_array_t **deallocated;
+    addresses_array_t allocated;
+    addresses_array_t deallocated;
 } address_monitoring_t;
 
 

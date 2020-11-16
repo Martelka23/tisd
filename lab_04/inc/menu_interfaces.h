@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdio.h>
 
 // Варианты главного меню
 typedef enum main_menu_choise
@@ -11,24 +12,24 @@ typedef enum main_menu_choise
 } main_menu_choise;
 
 // Варианты работы со стэком на массиве
-typedef enum menu_array_stack_choise
+typedef enum menu_stack_choise
 {
-    EXIT,
+    EXIT_TO_MAIN_MENU,
     MANUAL_FILLING,
     AUTO_FILLING,
     OUTPUT_ELEMS,
     DESCRIPTION
-} menu_array_stack_choise;
+} menu_stack_choise;
 
 // Варианты работы со стэком на списке
-typedef enum menu_list_stack_choise
-{
-    EXIT,
-    MANUAL_FILLING,
-    AUTO_FILLING,
-    OUTPUT_ELEMS,
-    DESCRIPTION
-} menu_list_stack_choise;
+// typedef enum menu_list_stack_choise
+// {
+//     EXIT,
+//     MANUAL_FILLING,
+//     AUTO_FILLING,
+//     OUTPUT_ELEMS,
+//     DESCRIPTION
+// } menu_list_stack_choise;
 
 
 // Интерфейс главного меню

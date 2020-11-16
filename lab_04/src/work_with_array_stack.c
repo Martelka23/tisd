@@ -7,7 +7,7 @@ error_code menu_array_stack()
     error_code error = OK;
     array_stack_t array_stack;
     array_stack_init(&array_stack);
-    menu_array_stack_choise choise;
+    int choise;
     address_monitoring_t address_monitoring;
     address_monitoring_init(&address_monitoring);
     array_stack_addresses_copy(&array_stack, &address_monitoring);
@@ -31,7 +31,9 @@ error_code menu_array_stack()
             case DESCRIPTION:
                 array_stack_description(&array_stack, &address_monitoring);
                 break;
-            case EXIT:
+            case EXIT_TO_MAIN_MENU:
+                array_stack_del(&array_stack);
+                address_monitoring_del(&address_monitoring);
                 break;
             
             default:
@@ -48,7 +50,7 @@ error_code menu_array_stack()
 void array_stack_addresses_copy(array_stack_t *array_stack, address_monitoring_t *address_monitoring)
 {
     for (int i = 0; i < array_stack->capacity; i++)
-        addresses_array_push_back(address_monitoring->allocated, &array_stack->begin[i]);
+        addresses_array_push_back(&address_monitoring->allocated, &array_stack->begin[i]);
 }
 
 // Ввод элементов вручную
@@ -57,7 +59,7 @@ error_code array_stack_manual_filling(array_stack_t *array_stack)
     int count;
     error_code error = OK;
 
-    printf("Заполненность стэка: %d / %d", array_stack->end - array_stack->begin, array_stack->capacity);
+    printf("Заполненность стэка: %ld / %d\n", array_stack->end - array_stack->begin, array_stack->capacity);
 
     printf("Сколько элементов хотите добавить в стэк на массиве: ");
     error = (scanf("%d", &count) != 1 || count < 0) ? WRONG_COUNT : OK;
@@ -81,7 +83,7 @@ error_code array_stack_auto_filling(array_stack_t *array_stack)
     int begin, end;
     error_code error = OK;
 
-    printf("Заполненность стэка: %d / %d", array_stack->end - array_stack->begin, array_stack->capacity);
+    printf("Заполненность стэка: %ld / %d\n", array_stack->end - array_stack->begin, array_stack->capacity);
 
     printf("Введите начало (наибольшее число) и конец диапазона (наименьшее число): ");
     error = (scanf("%d %d", &begin, &end) != 2 || begin < end) ? WRONG_RANGE : OK;
@@ -98,18 +100,18 @@ error_code array_stack_output_elems(array_stack_t *array_stack)
     int count;
     error_code error = OK;
 
-    printf("Заполненность стэка: %d / %d", array_stack->end - array_stack->begin, array_stack->capacity);
+    printf("Заполненность стэка: %ld / %d\n", array_stack->end - array_stack->begin, array_stack->capacity);
 
     printf("Сколько элементов из стэка хотите вывести (введите 0, чтобы вывести все элементы): ");
     error = (scanf("%d", &count) != 1 || count < 0) ? WRONG_COUNT : OK;
-    count = (count == 0) ? array_stack->end - array_stack->begin : count;
+    count = (count == 0) ? (int)(array_stack->end - array_stack->begin) : count;
 
     for (int i = 0; i < count && !error; i++)
     {
         int x;
         error = array_stack_pop(array_stack, &x);
         if (!error)
-            printf("%3d ", x);
+            printf("%d ", x);
     }
 
     return error;
@@ -121,10 +123,10 @@ void array_stack_description(array_stack_t *array_stack, address_monitoring_t *a
     printf(
         "\n*****Описание стэка*****\n"
         "Название: стэк на массиве.\n"
-        "Указатель на начало: %d.\n"
-        "Указатель на вершину: %d.\n",
-        array_stack->begin, array_stack->end
+        "Указатель на начало: %p.\n"
+        "Указатель на вершину: %p.\n",
+        (void *)array_stack->begin, (void *)array_stack->end
     );
-    printf("Заполненность стэка: %d / %d", array_stack->end - array_stack->begin, array_stack->capacity);
+    printf("Заполненность стэка: %ld / %d\n", array_stack->end - array_stack->begin, array_stack->capacity);
     address_monitoring_print(address_monitoring);
 }
